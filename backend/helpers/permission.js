@@ -1,13 +1,18 @@
-const userModel = require("../models/userModels")
+const userModel = require("../models/userModels.js");
 
-const uploadProductPermission=async(userId)=>{
-    const user=await userModel.findById(userId)
+const uploadProductPermission = async (userId) => {
+  const user = await userModel.findById(userId);
 
-    if(user.role !== 'ADMIN'){
-        return false
-    }
+  if (!user) {
+    console.log("User not found");
+    return false;
+  }
 
-    return false
-}
+  if (user.role !== "ADMIN") {
+    return false;
+  }
 
-module.exports=uploadProductPermission
+  return true;
+};
+
+module.exports = uploadProductPermission;

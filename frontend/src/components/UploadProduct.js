@@ -8,7 +8,7 @@ import { MdDelete } from "react-icons/md";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
 
-const UploadProduct = ({ onClose }) => {
+const UploadProduct = ({ onClose,fetchdata }) => {
   const [data, setData] = useState({
     productName: "",
     brandName: "",
@@ -74,16 +74,21 @@ const UploadProduct = ({ onClose }) => {
       body: JSON.stringify(data),
     });
 
-    const responseData = await response.json();
+    console.log(response)
 
-    if (response.success) {
+    const responseData = await response.json();
+    
+
+    if (response.status===201) {
       toast.success(responseData?.message);
       onClose();
+      fetchdata()
+    }else{
+      toast.error(responseData?.message);
+
     }
 
-    if (response.error) {
-      toast.error(responseData?.message);
-    }
+   
   };
 
   return (
@@ -161,7 +166,7 @@ const UploadProduct = ({ onClose }) => {
                   id="uploadImageInput"
                   className="hidden"
                   onChange={handlleUploadProduct}
-                  required
+                  
                 />
               </div>
             </div>
@@ -236,8 +241,9 @@ const UploadProduct = ({ onClose }) => {
             className="h-28 bg-slate-100 border resize-none p-1"
             placeholder="enter product description"
             rows={3}
-            onClick={handleOnChange}
+            onChange={handleOnChange}
             name="description"
+            value={data.description}
             required
           ></textarea>
 
